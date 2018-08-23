@@ -1,0 +1,17 @@
+{% extends "::base.html.twig" %}
+    {% block stylesheets %}
+        <link rel='stylesheet prefetch' href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css'>
+        <link rel="stylesheet" href="{{ asset('bundles/app/css/style.css') }}">
+    {% endblock %}
+    {% block body %}
+        <div>
+            {% block fos_user_content %}
+            {% endblock fos_user_content %}
+        </div>
+    {% endblock body %}
+    
+    {% block javascripts %}
+            <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+            <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
+    {% endblock %}
+

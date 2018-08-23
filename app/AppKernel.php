@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new AppBundle\AppBundle(),
 
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
+            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new FOS\UserBundle\FOSUserBundle(),
         ];
 
