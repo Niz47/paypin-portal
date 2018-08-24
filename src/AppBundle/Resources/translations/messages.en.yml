@@ -1,0 +1,7 @@
+paypin_admin:
+    user:
+        email: Email
+        username: Username
+        password: Password
+        enabled: Is user enabled?
+        roles: User Roles

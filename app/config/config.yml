@@ -90,12 +90,14 @@ sonata_block:
     default_contexts: [cms]
     blocks:
         # Enable the SonataAdminBundle block
-        # sonata.admin.block.admin_list:
-        #     contexts:   [admin]
+         sonata.admin.block.admin_list:
+             contexts:   [admin]
 
 sonata_admin:
     title: Pay Pin Admin
     title_logo: bundles/app/images/logo.png
+    templates:
+        user_block: AppBundle:Admin:user_block.html.twig
     security:
         handler: sonata.admin.security.handler.role
         information:

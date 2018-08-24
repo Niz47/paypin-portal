@@ -1,0 +1,8 @@
+{% block user_block %}
+    <div style="margin: 10px; padding-left: 60px">
+        {% if app.user %}
+            {{ app.user.username }}
+            - <a style="color:blue; font-weight: bolder" href="{{ url('fos_user_security_logout') }}">Logout</a>
+        {% endif %}
+    </div>
+{% endblock %}

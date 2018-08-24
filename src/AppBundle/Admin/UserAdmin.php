@@ -30,19 +30,19 @@ class UserAdmin extends BaseAdmin
         $isCreate = $this->subject->getId() === null;
 
         $formMapper
-            ->add('email', 'text', ['label' => 'mytel_admin.user.email'])
-            ->add('username', 'text', ['label' => 'mytel_admin.user.username'])
+            ->add('email', 'text', ['label' => 'paypin_admin.user.email'])
+            ->add('username', 'text', ['label' => 'paypin_admin.user.username'])
             ->add(
                 'plainPassword',
                 'password',
-                ['label' => 'mytel_admin.user.password', 'required' => $isCreate]
+                ['label' => 'paypin_admin.user.password', 'required' => $isCreate]
             )
             ->add(
                 'roles',
                 'choice',
-                ['label' => 'mytel_admin.user.roles', 'choices' => $allowedRoles, 'multiple' => true]
+                ['label' => 'paypin_admin.user.roles', 'choices' => $allowedRoles, 'multiple' => true]
             )
-            ->add('enabled', 'checkbox', ['label' => 'mytel_admin.user.enabled', 'required' => false]);
+            ->add('enabled', 'checkbox', ['label' => 'paypin_admin.user.enabled', 'required' => false]);
     }
 
     /**
