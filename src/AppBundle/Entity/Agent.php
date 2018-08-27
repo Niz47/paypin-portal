@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="agent")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AgentRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Agent
 {
@@ -204,9 +205,9 @@ class Agent
     /**
      * Set serviceProvider
      *
-     * @param TransactionLog $transactionLog
+     * @param ServiceProvider $serviceProvider
      *
-     * @return ServiceProvider
+     * @return Agent
      */
     public function setServiceProvider(ServiceProvider $serviceProvider = null)
     {
@@ -231,7 +232,7 @@ class Agent
      *
      * @param User $user
      *
-     * @return Session
+     * @return Agent
      */
     public function setUser(User $user = null)
     {
@@ -248,6 +249,23 @@ class Agent
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function beforeSave()
+    {
+        $this->createdDateTime = new \DateTime();
+        $this->updatedDateTime = new \DateTime();   
+    }
+
+    /**
+     * @ORM\PreUpdate()
+     */
+    public function beforeUpdate()
+    {
+        $this->updatedDateTime = new \DateTime();
     }
 }
 

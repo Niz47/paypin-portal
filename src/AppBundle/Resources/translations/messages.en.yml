@@ -13,3 +13,4 @@ paypin_admin:
         api_key: API Key
         service_provider: Service Provider
         user: Login User
+        enabled: Is Agent enabled?

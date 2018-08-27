@@ -16,4 +16,15 @@ parameters:
     mailer_password: ~
 
     # A secret key that's used to generate certain security-related tokens
-    secret: ThisTokenIsNotSoSecretChangeIt
+    secret: d2880ad2c4689163f9b2acdff7812e97
+
+    # portal User Roles
+    portal_allowed_user_create_roles:
+        ROLE_USER: 'Default User Role'
+        ROLE_READER: Reader
+        ROLE_ADMIN: Admin
+        ROLE_SUPER_ADMIN: 'Super Admin'
+        ROLE_SONATA_USER_READER: 'User Management Read'
+        ROLE_SONATA_USER_ADMIN: 'User Management Write'
+        ROLE_SONATA_SERVICE_PROVIDER_READER: 'Service Provider Read'
+        ROLE_SONATA_SERVICE_PROVIDER_ADMIN: 'Service Provider Write'

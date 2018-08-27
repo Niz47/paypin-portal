@@ -35,20 +35,24 @@ class AgentAdmin extends BaseAdmin
         $formMapper
             ->add('agentId', 'number', ['label' => 'paypin_admin.agent.agent_id'])
             ->add('apiKey', 'text', ['label' => 'paypin_admin.agent.api_key'])
-            ->add('serviceProvider', EntityType::class, array(
-                'label' => 'paypin_admin.agent.service_provider',
-                'class' => ServiceProvider::class,
-                'choice_label' => function ($serviceprovider) {
-                    return $serviceprovider->getServiceProviderName();
-                }
-            ))
-            ->add('user', EntityType::class, array(
+            ->add('serviceProvider', 'entity', array(
+                    'label' => 'paypin_admin.agent.service_provider',
+                    'class' => 'AppBundle\Entity\ServiceProvider',
+                    'choice_label' => 'serviceProviderName',
+                ))
+            ->add('user', 'entity', array(
+                    'label' => 'paypin_admin.agent.user',
+                    'class' => 'AppBundle\Entity\User',
+                    'choice_label' => 'userName',
+                ))
+            ->add('status', 'checkbox', ['label' => 'paypin_admin.agent.enabled', 'required' => false]);
+            /*->add('user', EntityType::class, array(
                 'label' => 'paypin_admin.agent.user',
                 'class' => User::class,
                 'choice_label' => function ($user) {
                     return $user->getUserName();
                 }
-            ));
+            ));*/
     }
 
     /**
@@ -77,6 +81,8 @@ class AgentAdmin extends BaseAdmin
             ->addIdentifier('id')
             ->add('agentId')
             ->add('apiKey')
+            ->add('serviceProvider.serviceProviderName')
+            ->add('user.userName')
             ->add(
                 'created_date_time',
                 'datetime',
@@ -87,6 +93,7 @@ class AgentAdmin extends BaseAdmin
                 'datetime',
                 ['template' => 'AppBundle:Admin:date_mmt_format_list.html.twig']
             )
+            ->add('status')
             ->add(
                 '_action',
                 'actions',
@@ -106,6 +113,8 @@ class AgentAdmin extends BaseAdmin
             ->add('id')
             ->add('agentId')
             ->add('apiKey')
+            ->add('serviceProvider.serviceProviderName')
+            ->add('user.userName')
             ->add(
                 'createdDateTime',
                 'datetime',
@@ -115,7 +124,8 @@ class AgentAdmin extends BaseAdmin
                 'updatedDateTime',
                 'datetime',
                 ['template' => 'AppBundle:Admin:date_mmt_format_show.html.twig']
-            );
+            )
+            ->add('status');
     }
 
     /**
@@ -128,6 +138,9 @@ class AgentAdmin extends BaseAdmin
             'id',
             'agentId',
             'apiKey',
+            'serviceProvider.serviceProviderName',
+            'user.userName',
+            'status',
             'createdDateTime',
             'updatedDateTime',
         ];

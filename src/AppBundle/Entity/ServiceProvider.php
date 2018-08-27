@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="service_provider")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ServiceProviderRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class ServiceProvider
 {
@@ -48,12 +49,6 @@ class ServiceProvider
      * @ORM\Column(name="updated_date_time", type="datetime")
      */
     private $updatedDateTime;
-
-    public function __construct()
-    {
-        $this->createdDateTime = new \DateTime();
-        $this->updatedDateTime = new \DateTime();
-    }
 
     /**
      * Get id
@@ -159,6 +154,23 @@ class ServiceProvider
     public function getUpdatedDateTime()
     {
         return $this->updatedDateTime;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function beforeSave()
+    {
+        $this->createdDateTime = new \DateTime();
+        $this->updatedDateTime = new \DateTime();
+    }
+
+    /**
+     * @ORM\PreUpdate()
+     */
+    public function beforeUpdate()
+    {
+        $this->updatedDateTime = new \DateTime();
     }
 }
 
