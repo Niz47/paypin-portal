@@ -5,3 +5,6 @@ paypin_admin:
         password: Password
         enabled: Is user enabled?
         roles: User Roles
+    serviceprovider:
+        sp_id: Service Provider ID
+        sp_name: Service Provider Name

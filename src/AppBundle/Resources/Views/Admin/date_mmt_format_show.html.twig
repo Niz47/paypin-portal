@@ -1,0 +1,6 @@
+<th{% if(is_diff|default(false)) %} class="diff"{% endif %}>{% block name %}{{ admin.trans(field_description.label, {}, field_description.translationDomain) }}{% endblock %}</th>
+<td>
+    {% block field %}
+        {{ value| to_MMT |raw }}
+    {% endblock %}
+</td>
