@@ -8,3 +8,8 @@ paypin_admin:
     serviceprovider:
         sp_id: Service Provider ID
         sp_name: Service Provider Name
+    agent:
+        agent_id: Agent ID
+        api_key: API Key
+        service_provider: Service Provider
+        user: Login User

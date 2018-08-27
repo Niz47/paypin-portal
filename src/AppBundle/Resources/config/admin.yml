@@ -16,3 +16,12 @@ services:
             - ~
             - AppBundle\Entity\ServiceProvider
             - ~
+
+    sonata.admin.agent:
+        class: AppBundle\Admin\AgentAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Agent", pager_type: "simple" }
+        arguments:
+            - ~
+            - AppBundle\Entity\Agent
+            - ~
