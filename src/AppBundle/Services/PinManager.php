@@ -12,7 +12,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface as Container;
  */
 class PinManager
 {
-    protected $url;
     protected $container;
 
     /**
@@ -22,17 +21,18 @@ class PinManager
     public function __construct(Container $container)
     {
         $this->container = $container;
-        $this->url = $container->getParameter('pay_pin_api_url');var_dump($this->url );die();
     }
 
     public function checkPinStatus($agentID, $secretKey, $serviceProviderID, $pinCode)
     {
         // Create the message Hash to prevent signature reuse
-        $contentmd5 = encodeReqBody($pinCode);
+        $contentmd5 = $this->encodeReqBody($pinCode);
         $contentType = 'application/json';
+        $url = $this->container->getParameter('pay_pin_api_url');
 
         // Get the time in UTC (critical to use UTC).
-        $dateNow = new DateTime('now',new DateTimeZone('UTC'));
+        // $dateNow = new DateTime('now',new DateTimeZone('UTC'));
+        $dateNow = new \DateTime();
         $savedate = $dateNow->format('r');
         $dateNow = $dateNow->format('c');
 
