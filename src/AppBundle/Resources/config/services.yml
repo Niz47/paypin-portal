@@ -11,3 +11,7 @@ services:
         public: false
         tags:
             - { name: twig.extension }
+
+    paypin.pin_manager:
+        class: AppBundle\Services\PinManager
+        arguments: ['@service_container']

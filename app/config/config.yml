@@ -114,3 +114,8 @@ sonata_admin:
         blocks:
             # display a dashboard block
             - { position: left, type: sonata.admin.block.admin_list }
+
+services: 
+    paypin.pin_manager:
+        class: AppBundle\Services\PinManager
+        arguments: ['@service_container']
