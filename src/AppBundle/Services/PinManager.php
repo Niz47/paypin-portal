@@ -2,8 +2,6 @@
 
 namespace AppBundle\Services;
 
-use AppBundle\Exception\APIException;
-use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
 /**
@@ -25,26 +23,41 @@ class PinManager
 
     public function checkPinStatus($agentID, $secretKey, $serviceProviderID, $pinCode)
     {
-        // Create the message Hash to prevent signature reuse
-        $contentmd5 = $this->encodeReqBody($pinCode);
-        $contentType = 'application/json';
+        $body = '{
+                        "Request":
+                            {"Vouchers" : [{
+                                                        "amount" : "", 
+                                                        "serviceProviderTransactionID" : "' . time() . '",
+                                                        "voucherReferenceID" : "' . $pinCode . '",
+                                                        "callbackURL" : "", 
+                                                        "status" : "", 
+                                                        "serviceProviderName" : "", 
+                                                        "serviceDescription" : ""
+                                                }]
+                            }
+                    }';
+
         $url = $this->container->getParameter('pay_pin_api_url');
 
-        // Get the time in UTC (critical to use UTC).
-        // $dateNow = new DateTime('now',new DateTimeZone('UTC'));
-        $dateNow = new \DateTime();
-        $savedate = $dateNow->format('r');
-        $dateNow = $dateNow->format('c');
+        return $this->sendRequest($body, $url, $agentID, $secretKey, $serviceProviderID);
+    }
 
-        // Generate the Authorisation Code from the component parts
-        $hash_string = $verb. "\n" . $contentmd5 . "\n" . $contentType . "\n" . $dateNow . "\n";
-        echo "\nHASH STRING:\n" . $hash_string . "\n\n";
-
-        $authCode = base64_encode(hash_hmac('sha1', $hash_string, $secretKey));
-        echo "\nAUTHCODE:\n" . $authCode . "\n\n";
+    public function sendRequest($body, $url, $agentID, $secretKey, $serviceProviderID)
+    {
+        $contentType = 'application/json';
+        $verb        = 'GET';
+        $savedate    = (new \DateTime())->format('r');
+        // Create the message Hash to prevent signature reuse
+        $contentmd5 = $this->encodeReqBody($body);
+        $authCode = $this->hashAuthCode($contentmd5, $verb, $contentType, $secretKey);
 
         // Build the HTTP Request Headers
         $ch = curl_init($url);
+
+        // set SSL false
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $verb);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -54,18 +67,26 @@ class PinManager
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
             'Content-Type: application/json',
             'Content-Length: ' . strlen($body),
-            'Content-MD5: ' .$contentmd5,
+            'Content-MD5: ' . $contentmd5,
             'Date: ' . $savedate,
-            'Authorization: MAV ' . $serviceProviderID . ':' . $agentId . ':' . $authCode
+            'Authorization: MAV ' . $serviceProviderID . ':' . $agentID . ':' . $authCode,
         ));
 
-        echo "\n\n" . $output = curl_exec($ch) . "\n\n";
+        $output = curl_exec($ch);
+        return json_decode($output, true);
     }
 
-    public function encodeReqBody($pinCode)
+    public function encodeReqBody($body)
     {
-        $body = '{"Request":{"Vouchers":[{"amount":"", "serviceProviderTransactionID":"' . time() . '","voucherReferenceID":"' . $pinCode . '","callbackURL":"", "status":"", "serviceProviderName":"", "serviceDescription":""}]}}';
         return base64_encode(md5($body, true));
+    }
+
+    public function hashAuthCode($contentmd5, $verb, $contentType, $secretKey)
+    {
+        $dateNow     = (new \DateTime())->format('c');
+        $hash_string = $verb . "\n" . $contentmd5 . "\n" . $contentType . "\n" . $dateNow . "\n";
+
+        return base64_encode(hash_hmac('sha1', $hash_string, $secretKey));
     }
 
     /**
@@ -76,9 +97,9 @@ class PinManager
     {
         // dummy response to be sent in case of mock api call
         return array(
-            'success' => true,
-            'result' => array(
-                'status' => 'SUCCESS'
+            'success'    => true,
+            'result'     => array(
+                'status' => 'SUCCESS',
             ),
             'resultCode' => '200',
         );

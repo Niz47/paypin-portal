@@ -32,13 +32,12 @@ class PinController extends AbstractController
         $serviceProviderID = '1000021369';
         $agentID = '100002149';
         $secretKey = 'NLLPUPEKFJ0UBET9';
-        $pinCode = '';
+        $pinCode = '145675282726186';
 
-
+        //  connect Pin Manager service
         $pinManager = $this->get('paypin.pin_manager');
-        // $pinManager = new PinManager();
-        $pinManager->checkPinStatus($agentID, $secretKey, $serviceProviderID, $pinCode);
-        var_dump($url);die();
+        $apiResponse = $pinManager->checkPinStatus($agentID, $secretKey, $serviceProviderID, $pinCode);
+        var_dump($apiResponse);die();
         return $this->render('pin/index.html.twig');
     }
 }
