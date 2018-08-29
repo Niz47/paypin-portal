@@ -32,5 +32,36 @@ class User extends BaseUser
     {
         return $this->id;
     }
+
+    /**
+     * One User has One Agent.
+     * @ORM\OneToOne(targetEntity="Agent", mappedBy="user", cascade={"all"}, fetch="EAGER")
+     */
+    private $agent;
+
+
+    /**
+     * Set agent
+     *
+     * @param Agent $agent
+     *
+     * @return User
+     */
+    public function setAgent(Agent $agent = null)
+    {
+        $this->agent = $agent;
+
+        return $this;
+    }
+
+    /**
+     * Get agent
+     *
+     * @return Agent
+     */
+    public function getAgent()
+    {
+        return $this->agent;
+    }
 }
 

@@ -61,14 +61,14 @@ class Agent
 
     /**
      * One Agent has One ServiceProvider.
-     * @ORM\OneToOne(targetEntity="ServiceProvider")
-     * @ORM\JoinColumn(name="sp_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\ManyToOne(targetEntity="ServiceProvider", inversedBy="agents")
+     * @ORM\JoinColumn(name="sp_id", referencedColumnName="id")
      */
     private $serviceProvider;
 
     /**
      * One Agent has One User.
-     * @ORM\OneToOne(targetEntity="User")
+     * @ORM\OneToOne(targetEntity="User", inversedBy="agent")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $user;
@@ -269,5 +269,17 @@ class Agent
     {
         $this->updatedDateTime = new \DateTime();
     }
+
+    public function __toString()
+    {
+        $str = (string)$this->getId();
+
+        if ($this->serviceProvider) {
+            $str .= ' - Log for Transaction ID:' . $this->serviceProvider->getId();
+        }
+
+        return $str;
+    }
+
 }
 

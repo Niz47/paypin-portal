@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use AppBundle\Entity\Agent;
 
 /**
  * ServiceProvider
@@ -49,6 +51,11 @@ class ServiceProvider
      * @ORM\Column(name="updated_date_time", type="datetime")
      */
     private $updatedDateTime;
+
+    public function __construct()
+    {
+        $this->agents = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -157,6 +164,13 @@ class ServiceProvider
     }
 
     /**
+     * One ServiceProvider has Many Agent.
+     * @ORM\OneToMany(targetEntity="Agent", mappedBy="serviceProvider")
+     */
+    private $agents;
+
+
+    /**
      * @ORM\PrePersist()
      */
     public function beforeSave()
@@ -171,6 +185,11 @@ class ServiceProvider
     public function beforeUpdate()
     {
         $this->updatedDateTime = new \DateTime();
+    }
+
+    public function __toString()
+    {
+        return (string)$this->id;
     }
 }
 
