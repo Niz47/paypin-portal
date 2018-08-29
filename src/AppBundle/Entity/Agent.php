@@ -60,18 +60,18 @@ class Agent
     private $updatedDateTime;
 
     /**
-     * One Agent has One ServiceProvider.
-     * @ORM\ManyToOne(targetEntity="ServiceProvider", inversedBy="agents")
-     * @ORM\JoinColumn(name="sp_id", referencedColumnName="id")
-     */
-    private $serviceProvider;
-
-    /**
      * One Agent has One User.
      * @ORM\OneToOne(targetEntity="User", inversedBy="agent")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $user;
+    
+    /**
+     * One Agent has One ServiceProvider.
+     * @ORM\ManyToOne(targetEntity="ServiceProvider", inversedBy="agents")
+     * @ORM\JoinColumn(name="sp_id", referencedColumnName="id")
+     */
+    private $serviceProvider;
 
     /**
      * Get id
@@ -203,32 +203,6 @@ class Agent
         return $this->updatedDateTime;
     }
 
-
-    /**
-     * Set serviceProvider
-     *
-     * @param ServiceProvider $serviceProvider
-     *
-     * @return Agent
-     */
-    public function setServiceProvider(ServiceProvider $serviceProvider = null)
-    {
-        $this->serviceProvider = $serviceProvider;
-
-        return $this;
-    }
-
-    /**
-     * Get serviceProvider
-     *
-     * @return ServiceProvider
-     */
-    public function getServiceProvider()
-    {
-        return $this->serviceProvider;
-    }
-
-
     /**
      * Set user
      *
@@ -254,6 +228,30 @@ class Agent
     }
 
     /**
+     * Set serviceProvider
+     *
+     * @param ServiceProvider $serviceProvider
+     *
+     * @return Agent
+     */
+    public function setServiceProvider(ServiceProvider $serviceProvider = null)
+    {
+        $this->serviceProvider = $serviceProvider;
+
+        return $this;
+    }
+
+    /**
+     * Get serviceProvider
+     *
+     * @return ServiceProvider
+     */
+    public function getServiceProvider()
+    {
+        return $this->serviceProvider;
+    }
+
+    /**
      * @ORM\PrePersist()
      */
     public function beforeSave()
@@ -269,17 +267,5 @@ class Agent
     {
         $this->updatedDateTime = new \DateTime();
     }
-
-    public function __toString()
-    {
-        $str = (string)$this->getId();
-
-        if ($this->serviceProvider) {
-            $str .= ' - Log for Transaction ID:' . $this->serviceProvider->getId();
-        }
-
-        return $str;
-    }
-
 }
 

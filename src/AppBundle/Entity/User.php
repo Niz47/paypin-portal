@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
+use AppBundle\Entity\Agent;
 
 /**
  * User
@@ -63,5 +64,6 @@ class User extends BaseUser
     {
         return $this->agent;
     }
+
 }
 
