@@ -1,25 +1,49 @@
-{{ form_start(form) }}
-  {{form_widget(form)}}
-            <!-- {{ form_row(form.region) }}    <select id="ge_candidatbundle_annonce_region" ...
-            {{ form_row(form.ville) }}  -->{# <select id="ge_candidatbundle_annonce_ville" ... #}
-            {# ... #}
-        {{ form_end(form) }}
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Check Pin Code</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <input type="submit" value="Check" />
+    {{ form_end(form) }}
+
+            
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
-            var $region = $('#ge_candidatbundle_annonce_region');
-            $region.change(function() {
-                var $form = $(this).closest('form');
-                var data = {};
-                data[$region.attr('name')] = $region.val();
-                $.ajax({
-                    url : $form.attr('action'),
-                    type: $form.attr('method'),
-                    data : data,
-                    success: function(html) {
-                        $('#ge_candidatbundle_annonce_ville').replaceWith(
-                            $(html).find('#ge_candidatbundle_annonce_ville')
-                        );
-                    }
-                });
+        $('#pin_serviceProviderId').change(function () {
+        
+            var spSelector = $(this);
+            
+            // Request the agents of the selected service provider.
+            $.ajax({
+                url: "{{ path('get_agents') }}",
+                type: "GET",
+                dataType: "JSON",
+                data: {
+                    serviceProviderId: spSelector.val()
+                },
+                success: function (agents) {
+                    var agentSelector = $("#pin_agentId");
+
+                    // Remove current options
+                    agentSelector.html('');
+                    
+                    // Empty value ...
+                    agentSelector.append('<option value> Select agent of ' + spSelector.find("option:selected").text() + ' ...</option>');
+                    
+                    
+                    $.each(agents, function (key, agent) {
+                        agentSelector.append('<option value="' + agent.id + '">' + agent.name + '</option>');
+                    });
+                },
+                error: function (err) {
+                    alert("An error ocurred while loading data ...");
+                }
             });
-        </script>
+        });
+    </script>
+{% endblock %}

@@ -74,7 +74,7 @@ class PinController extends AbstractController
                 // $this->addFlash('success', 'Pin updated!');
             }
 
-            return $this->render('new.html.twig', ['form' => $form->createView()]);
+            return $this->render('pin/index-admin.html.twig', ['form' => $form->createView()]);
 
         } else {
 
