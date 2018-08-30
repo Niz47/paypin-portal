@@ -5,7 +5,7 @@
 
     {{ form_start(form) }}
         {{ form_widget(form) }}
-        <input type="submit" value="Create" />
+        <input type="submit" value="Check" />
     {{ form_end(form) }}
 
             
@@ -18,9 +18,9 @@
         
             var citySelector = $(this);
             
-            // Request the neighborhoods of the selected city.
+            // Request the agents of the selected service provider.
             $.ajax({
-                url: "{{ path('person_list_neighborhoods') }}",
+                url: "{{ path('get_agents') }}",
                 type: "GET",
                 dataType: "JSON",
                 data: {

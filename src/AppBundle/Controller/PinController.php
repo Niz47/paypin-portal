@@ -25,7 +25,7 @@ class PinController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      */
-    public function listNeighborhoodsOfCityAction(Request $request)
+    public function getAgentsAction(Request $request)
     {
         // Get Entity manager and repository
         $em = $this->getDoctrine()->getManager();

@@ -13,7 +13,7 @@ _sonata_admin:
     type: sonata_admin
     prefix: /admin
 
-person_list_neighborhoods:
-    path:     /get-neighborhoods-from-city
-    defaults: { _controller: "AppBundle:Pin:listNeighborhoodsOfCity" }
+get_agents:
+    path:     /get-agents-from-serviceprovider
+    defaults: { _controller: "AppBundle:Pin:getAgents" }
     methods:  GET
