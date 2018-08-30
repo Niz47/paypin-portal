@@ -9,14 +9,78 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Agent;
+use AppBundle\Entity\Pin;
 use AppBundle\Entity\ServiceProvider;
 use AppBundle\Services\PinManager;
 use AppBundle\Repository\ServiceProviderRepository;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use AppBundle\Form\Type\PinType;
+
 class PinController extends AbstractController
 {
+
+/**
+     * Returns a JSON string with the neighborhoods of the City with the providen id.
+     * 
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function listNeighborhoodsOfCityAction(Request $request)
+    {
+        // Get Entity manager and repository
+        $em = $this->getDoctrine()->getManager();
+        $neighborhoodsRepository = $em->getRepository("AppBundle:Agent");
+        
+        // Search the neighborhoods that belongs to the city with the given id as GET parameter "cityid"
+        $neighborhoods = $neighborhoodsRepository->createQueryBuilder("q")
+            ->where("q.serviceProvider = :spid")
+            ->setParameter("spid", $request->query->get("id"))
+            ->getQuery()
+            ->getResult();
+        var_dump($neighborhoods);die();
+        // Serialize into an array the data that we need, in this case only name and id
+        // Note: you can use a serializer as well, for explanation purposes, we'll do it manually
+        $responseArray = array();
+        foreach($neighborhoods as $neighborhood){
+            $responseArray[] = array(
+                "id" => $neighborhood->getId(),
+                "name" => $neighborhood->getName()
+            );
+        }
+        
+        // Return array with structure of the neighborhoods of the providen city id
+        return new JsonResponse($responseArray);
+
+        // e.g
+        // [{"id":"3","name":"Treasure Island"},{"id":"4","name":"Presidio of San Francisco"}]
+    }
+
+
     /**
-     * @Route("/", name="homepage")
+     * @Route("/aa", name="aa")
+     */
+    public function createAction(Request $request)
+    {
+        // $pin = new Pin();
+
+        $em = $this->getDoctrine()->getManager();
+
+        $form = $this->createForm(PinType::class, new Pin());
+// var_dump("test");die();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->addFlash('success', 'Pin updated!');
+        }
+
+        return $this->render('aa.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+
+    /**
+     * @Route("/tt", name="homepage")
      */
     public function indexAction(Request $request)
     {
@@ -154,7 +218,7 @@ class PinController extends AbstractController
                     ->getForm();*/
         return $form;
     }
-    
+
     public function isAdmin($roles)
     {
         return in_array($this->container->getParameter('check_pin_admin_access'), $roles);

@@ -14,6 +14,10 @@ services:
         # if you need to do this, you can override this setting on individual services
         public: false
 
+    AppBundle\Form\Type\PinType:
+        arguments: ['@doctrine.orm.entity_manager']
+        tags: [form.type]
+
     # makes classes in src/AppBundle available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
 #    AppBundle\:
