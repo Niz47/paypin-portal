@@ -20,7 +20,7 @@ use AppBundle\Form\Type\PinType;
 class PinController extends AbstractController
 {
     /**
-     * Returns a JSON string with the neighborhoods of the City with the providen id.
+     * Returns a JSON string with the agents of the service provider with the providen id.
      * 
      * @param Request $request
      * @return JsonResponse
@@ -49,7 +49,6 @@ class PinController extends AbstractController
         return new JsonResponse($responseArray);
     }
 
-
     /**
      * @Route("/", name="homepage")
      */
@@ -63,8 +62,16 @@ class PinController extends AbstractController
             $form = $this->createForm(PinType::class, new Pin());
 
             $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
-                $this->addFlash('success', 'Pin updated!');
+            if ($form->isSubmitted() && $form->isValid()) 
+            {
+                $pinCode = $form['pinCode']->getData();
+                $agentID = $form['agentId']->getData()->getAgentId();
+                $secretKey = $form['agentId']->getData()->getApiKey();
+                $serviceProviderID = $form['serviceProviderId']->getData()->getServiceProviderId();
+
+                $apiResponse = $this->checkPinAdminAction($agentID, $secretKey, $serviceProviderID, $pinCode);
+                var_dump($apiResponse);die();
+                // $this->addFlash('success', 'Pin updated!');
             }
 
             return $this->render('new.html.twig', ['form' => $form->createView()]);
@@ -81,24 +88,28 @@ class PinController extends AbstractController
             
             return $this->render('pin/index.html.twig', array('form'=>$form->createView()));
         }
-        // return $this->render('pin/index.html.twig');
+    }
+
+    public function checkPinAdminAction($agentID, $secretKey, $serviceProviderID, $pinCode)
+    {
+        //  connect Pin Manager service
+        $pinManager = $this->get('paypin.pin_manager');
+        $apiResponse = $pinManager->checkPinStatus($agentID, $secretKey, $serviceProviderID, $pinCode);
+        var_dump($apiResponse);die();
+        return $this->render('pin/index.html.twig');
     }
 
     public function checkPinUserAction($pinCode)
     {
         $user_id = $this->getUser()->getId();
-        // check Login user role
-        $roles = $this->getUser()->getRoles();
-        if (in_array($this->container->getParameter('check_pin_admin_access'), $roles)) {
-            var_dump($roles);
-        } else {
-            $uRepository = $this->getDoctrine()->getRepository(User::class);
-            $aRepository = $this->getDoctrine()->getRepository(Agent::class);
-            $agentID = $uRepository->find($user_id)->getAgent()->getAgentId();
-            $secretKey = $uRepository->find($user_id)->getAgent()->getApiKey();
-            $agent_id = $uRepository->find($user_id)->getAgent()->getId();
-            $serviceProviderID = $aRepository->find($agent_id)->getServiceProvider()->getServiceProviderId();
-        }
+        
+        $uRepository = $this->getDoctrine()->getRepository(User::class);
+        $aRepository = $this->getDoctrine()->getRepository(Agent::class);
+        $agentID = $uRepository->find($user_id)->getAgent()->getAgentId();
+        $secretKey = $uRepository->find($user_id)->getAgent()->getApiKey();
+        $agent_id = $uRepository->find($user_id)->getAgent()->getId();
+        $serviceProviderID = $aRepository->find($agent_id)->getServiceProvider()->getServiceProviderId();
+       
         // $pinCode = '145675282726186';
         //  connect Pin Manager service
         $pinManager = $this->get('paypin.pin_manager');
