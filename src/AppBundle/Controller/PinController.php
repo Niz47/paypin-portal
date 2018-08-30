@@ -19,7 +19,6 @@ use AppBundle\Form\Type\PinType;
 
 class PinController extends AbstractController
 {
-
     /**
      * Returns a JSON string with the neighborhoods of the City with the providen id.
      * 
@@ -46,73 +45,45 @@ class PinController extends AbstractController
             );
         }
         
-        // Return array with structure of the neighborhoods of the providen city id
+        // Return array with structure of the agents of the providen service provider id
         return new JsonResponse($responseArray);
-
-        // e.g
-        // [{"id":"3","name":"Treasure Island"},{"id":"4","name":"Presidio of San Francisco"}]
     }
 
 
     /**
-     * @Route("/aa", name="aa")
-     */
-    public function createAction(Request $request)
-    {
-        // $pin = new Pin();
-
-        $em = $this->getDoctrine()->getManager();
-
-        $form = $this->createForm(PinType::class, new Pin());
-// var_dump("test");die();
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->addFlash('success', 'Pin updated!');
-        }
-
-        return $this->render('new.html.twig', [
-            'form' => $form->createView()
-        ]);
-    }
-
-
-    /**
-     * @Route("/tt", name="homepage")
+     * @Route("/", name="homepage")
      */
     public function indexAction(Request $request)
     {
-            // get Login user roles
-            $roles = $this->getUser()->getRoles();
-            if ($this->isAdmin($roles)) {
-                # code... for admin 
-                $form = $this->getAdminForm();
-                $form -> handleRequest($request);
-            } else {
-                $form = $this->getUserForm();
-                $form -> handleRequest($request);
-                if ($form->isSubmitted() && $form->isValid()) {
-                    $apiResponse = $this->checkPinUserAction($form['pin_code']->getData());
-                    var_dump($apiResponse);die();
-                    return $this->redirectToRoute('todo_list');
-                }
+        // get Login user roles
+        $roles = $this->getUser()->getRoles();
+        if ($this->isAdmin($roles)) 
+        {
+            # code... for admin 
+            $form = $this->createForm(PinType::class, new Pin());
+
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->addFlash('success', 'Pin updated!');
             }
-        /*if ($form->isSubmitted() && $form->isValid()) {
-            //Get Data
-            $todo->setName($form['name']->getData());
-            $todo->setCategory($form['category']->getData());
-            $todo->setDescription($form['description']->getData());
-            $todo->setPriority($form['priority']->getData());
-            $todo->setDueDate($form['dueDate']->getData());
-            $todo->setCreateDate(new\DateTime('now'));
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($todo);
-            $em->flush();
-            $this->addflash('notice', 'Todo Added!');
-            return $this->redirectToRoute('todo_list');
-        }*/
-         return $this->render('pin/index.html.twig', array('form'=>$form->createView()));
+
+            return $this->render('new.html.twig', ['form' => $form->createView()]);
+
+        } else {
+
+            $form = $this->getUserForm();
+            $form -> handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) 
+            {
+                $apiResponse = $this->checkPinUserAction($form['pin_code']->getData());
+                var_dump($apiResponse);die();
+            }
+            
+            return $this->render('pin/index.html.twig', array('form'=>$form->createView()));
+        }
         // return $this->render('pin/index.html.twig');
     }
+
     public function checkPinUserAction($pinCode)
     {
         $user_id = $this->getUser()->getId();
@@ -135,84 +106,13 @@ class PinController extends AbstractController
         var_dump($apiResponse);die();
         return $this->render('pin/index.html.twig');
     }
+
     public function getUserForm()
     {
         $form = $this->createFormBuilder()
                     ->add('pin_code', TextType::class, array('attr' => array('class' => 'form-control', 'style' => 'margin-bottom:15px')))
                     ->add('save', SubmitType::class, array('label'=>'Check', 'attr' => array('class' => 'btn btn-primary', 'style' => 'margin-bottom:15px')))
                     ->getForm();
-        return $form;
-    }
-    public function getAdminForm()
-    {
-        $form = $this->createFormBuilder()
-                    ->add('aaa', TextType::class, array('attr' => array('class' => 'form-control', 'style' => 'margin-bottom:15px')))
-                     ->add('serviceProvider', 'entity', array(
-                            'label' => 'paypin_admin.agent.service_provider',
-                            'class' => 'AppBundle\Entity\ServiceProvider',
-                            'choice_label' => 'serviceProviderName',
-                        ))
-                    // ->add('ville')
-                    /*->addEventListener(
-                        FormEvents::PRE_SET_DATA,
-                        function (FormEvent $event) use ($formModifier) {
-                            $data = $event->getData();
-                            $formModifier($event->getForm(), $data->getAgents());
-                        }
-                    )
-                    ->get('serviceProvider')->addEventListener(
-                        FormEvents::POST_SUBMIT,
-                        function (FormEvent $event) use ($formModifier) {
-                            $serviceProvider = $event->getForm()->getData();
-                            $formModifier($event->getForm()->getParent(), $serviceProvider);
-                        }
-                    )*/
-                    /*->add('agent', ChoiceType::class, array(
-                            'disabled'    => true,
-                        ))*/
-                    ->add('save', SubmitType::class, array('label'=>'Check', 'attr' => array('class' => 'btn btn-primary', 'style' => 'margin-bottom:15px')))
-                    ->getForm();
-                    /*$formModifier = function (FormInterface $form, ServiceProvider $serviceProvider = null) {
-                            $villes = null === $serviceProvider ? array() : $serviceProvider->getAgents();
-                            $form->add('ville', EntityType::class, array(
-                                'class' => 'AppBundle:Agent',
-                                'placeholder' => '',
-                                'choices' => $villes,
-                                'label' => 'Ville *',
-                                'label_attr' => [
-                                    "class" => "smaller lighter blue",
-                                    "style" => "font-size: 21px;",
-                                ],
-                                // 'choice_label'  => 'nom',
-                                'multiple'      => false,
-                            ));
-                        };
-                    $form->addEventListener(
-                        FormEvents::PRE_SET_DATA,
-                        function (FormEvent $event) use ($formModifier) {
-                            $data = $event->getData();
-                            $formModifier($event->getForm(), $data->getVille());
-                        }
-                    );
-                    $form->get('serviceProvider')->addEventListener(
-                        FormEvents::POST_SUBMIT,
-                        function (FormEvent $event) use ($formModifier) {
-                            $serviceProvider = $event->getForm()->getData();
-                            $formModifier($event->getForm()->getParent(), $serviceProvider);
-                        }
-                    );*/
-        /*$form = $this->createFormBuilder()
-                    ->add('aaa', TextType::class, array('attr' => array('class' => 'form-control', 'style' => 'margin-bottom:15px')))
-                    ->add('serviceProvider', 'entity', array(
-                            'label' => 'paypin_admin.agent.service_provider',
-                            'class' => 'AppBundle\Entity\ServiceProvider',
-                            'choice_label' => 'serviceProviderName',
-                        ))
-                    ->add('agent', ChoiceType::class, array(
-                            'disabled'    => true,
-                        ))
-                    ->add('save', SubmitType::class, array('label'=>'Check', 'attr' => array('class' => 'btn btn-primary', 'style' => 'margin-bottom:15px')))
-                    ->getForm();*/
         return $form;
     }
 
