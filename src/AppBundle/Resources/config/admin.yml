@@ -7,3 +7,21 @@ services:
             - ~
             - AppBundle\Entity\User
             - ~
+
+    sonata.admin.serviceprovider:
+        class: AppBundle\Admin\ServiceProviderAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Service Provider", pager_type: "simple" }
+        arguments:
+            - ~
+            - AppBundle\Entity\ServiceProvider
+            - ~
+
+    sonata.admin.agent:
+        class: AppBundle\Admin\AgentAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Agent", pager_type: "simple" }
+        arguments:
+            - ~
+            - AppBundle\Entity\Agent
+            - ~

@@ -1,6 +1,17 @@
-# services:    
+services:    
 #   paypin.user:        
 #     class: AppBundle\Admin\UserAdmin        
 #     arguments: [~, AppBundle\Entity\User, ~]        
 #     tags:            
 #       - { name: sonata.admin, manager_type: orm, label: User }
+
+    paypin.twig_extension:
+        class: AppBundle\Twig\Extension\AppExtension
+        # arguments: ['@paypin.serviceprovider_manager']
+        public: false
+        tags:
+            - { name: twig.extension }
+
+    paypin.pin_manager:
+        class: AppBundle\Services\PinManager
+        arguments: ['@service_container']

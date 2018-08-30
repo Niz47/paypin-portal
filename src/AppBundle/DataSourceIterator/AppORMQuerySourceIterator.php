@@ -2,10 +2,8 @@
 
 /**
  * Custom data source iterator
- * @author Jayraj Arora <jayraja@mindfiresolutions.com>
  * @category DataSourceIterator
  */
-
 
 namespace AppBundle\DataSourceIterator;
 
