@@ -1,25 +1,21 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Person creation</h1>
+    <h1>Check Pin Code</h1>
 
     {{ form_start(form) }}
         {{ form_widget(form) }}
         <input type="submit" value="Create" />
     {{ form_end(form) }}
 
-    <ul>
-        <li>
-            <a href="{{ path('person_index') }}">Back to the list</a>
-        </li>
-    </ul>
             
 {% endblock %}
 
 {% block javascripts %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
-        $('#appbundle_person_city').change(function () {
+        $('#pin_serviceProviderId').change(function () {
+        
             var citySelector = $(this);
             
             // Request the neighborhoods of the selected city.
@@ -28,10 +24,10 @@
                 type: "GET",
                 dataType: "JSON",
                 data: {
-                    cityid: citySelector.val()
+                    serviceProviderId: citySelector.val()
                 },
                 success: function (neighborhoods) {
-                    var neighborhoodSelect = $("#appbundle_person_neighborhood");
+                    var neighborhoodSelect = $("#pin_agentId");
 
                     // Remove current options
                     neighborhoodSelect.html('');

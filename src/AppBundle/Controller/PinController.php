@@ -20,7 +20,7 @@ use AppBundle\Form\Type\PinType;
 class PinController extends AbstractController
 {
 
-/**
+    /**
      * Returns a JSON string with the neighborhoods of the City with the providen id.
      * 
      * @param Request $request
@@ -30,22 +30,19 @@ class PinController extends AbstractController
     {
         // Get Entity manager and repository
         $em = $this->getDoctrine()->getManager();
-        $neighborhoodsRepository = $em->getRepository("AppBundle:Agent");
+
+        // Search the agents that belongs to the service provider with the given id as GET parameter "serviceProviderId"
+        $serviceProviderId = $request->query->get("serviceProviderId");
+        $agentRepo = $em->getRepository(Agent::class);
+        $agents = $agentRepo->findByServiceProvider($serviceProviderId);
         
-        // Search the neighborhoods that belongs to the city with the given id as GET parameter "cityid"
-        $neighborhoods = $neighborhoodsRepository->createQueryBuilder("q")
-            ->where("q.serviceProvider = :spid")
-            ->setParameter("spid", $request->query->get("id"))
-            ->getQuery()
-            ->getResult();
-        var_dump($neighborhoods);die();
         // Serialize into an array the data that we need, in this case only name and id
         // Note: you can use a serializer as well, for explanation purposes, we'll do it manually
         $responseArray = array();
-        foreach($neighborhoods as $neighborhood){
+        foreach($agents as $agent){
             $responseArray[] = array(
-                "id" => $neighborhood->getId(),
-                "name" => $neighborhood->getName()
+                "id" => $agent->getId(),
+                "name" => $agent->getAgentId()
             );
         }
         
@@ -73,7 +70,7 @@ class PinController extends AbstractController
             $this->addFlash('success', 'Pin updated!');
         }
 
-        return $this->render('aa.html.twig', [
+        return $this->render('new.html.twig', [
             'form' => $form->createView()
         ]);
     }

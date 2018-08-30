@@ -33,11 +33,18 @@ class PinType extends AbstractType
         // 2. RentityManagerove the dependent select from the original buildForm as this will be
         // dinamically added later and the trigger as well
         $builder->add('pinCode');
-        $builder->add('serviceProviderId', 'entity', array(
+
+        // Test Agents
+        /*$agentRepo = $this->entityManager->getRepository(Agent::class);
+        $agents = $agentRepo->findByServiceProvider(1);
+        var_dump($agents[0]->getApiKey());die();*/
+
+        
+        /*$builder->add('serviceProviderId', 'entity', array(
                     'label' => 'paypin_admin.agent.service_provider',
                     'class' => 'AppBundle\Entity\ServiceProvider',
                     'choice_label' => 'serviceProviderName',
-                ));
+                ));*/
 
         // Test Entity Manager
         /*$repository = $this->entityManager->getRepository(ServiceProvider::class);
@@ -46,63 +53,61 @@ class PinType extends AbstractType
 
 
         // 3. Add 2 event listeners for the form
-        /*$builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));*/
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
     }
     
     function onPreSubmit(FormEvent $event) {
         $form = $event->getForm();
-        $data = $event->getData();
+        $pin = $event->getData();
         
         // Search for selected City and convert it into an Entity
-        /*$form->add('serviceProvider', 'entity', array(
-                    'label' => 'paypin_admin.agent.service_provider',
-                    'class' => 'AppBundle\Entity\ServiceProvider',
-                    'choice_label' => 'serviceProviderName',
-                ));*/
-        $city = $this->entityManager->getRepository('AppBundle:ServiceProvider')->find($data['city']);
+        $serviceProvider = $this->entityManager->getRepository(ServiceProvider::class)->find($pin['serviceProviderId']);
         
-        $this->addElentityManagerents($form, $city);
+        $this->addElements($form, $serviceProvider);
     }
 
     function onPreSetData(FormEvent $event) {
-        $person = $event->getData();
+        $pin = $event->getData();
         $form = $event->getForm();
 
-        // When you create a new person, the City is always entityManagerpty
-        $service_provider = $person->getAgentId() ? $person->getAgentId() : null;
+        $serviceProvider = $pin->getServiceProviderId() ? $this->entityManager->getRepository(ServiceProvider::class)->find($pin['serviceProviderId']) : null;
         
-        $this->addElentityManagerents($form, $service_provider);
+        $this->addElements($form, $serviceProvider);
     }
 
-    protected function addElentityManagerents(FormInterface $form, ServiceProvider $service_provider = null) {
-        // 4. Add the province elentityManagerent
-        $form->add('service_provider', 'entity', array(
-            'required' => true,
-            'placeholder' => 'Select a service_provider...',
-            'class' => 'AppBundle\Entity\ServiceProvider',
-            'choice_label' => 'serviceProviderName',
-        ));
+    protected function addElements(FormInterface $form, ServiceProvider $serviceProvider = null) {
+        // 4. Add the province element
+        $form->add('serviceProviderId', 'entity', array(
+                    'required' => true,
+                    'label' => 'paypin_admin.agent.service_provider',
+                    'placeholder' => 'Select a Service Provider...',
+                    'class' => 'AppBundle\Entity\ServiceProvider',
+                    'choice_label' => 'serviceProviderName',
+                ));
         
-        // Neighborhoods entityManagerpty, unless there is a selected City (Edit View)
         $agents = array();
         
-        // If there is a city stored in the Person entity, load the neighborhoods of it
-        if ($service_provider) {
-            // Fetch Neighborhoods of the City if there's a selected city
-            $repoNeighborhood = $this->entityManager->getRepository('AppBundle:Agent');
-            
-            $agents = $repoNeighborhood->createQueryBuilder("q")
-                ->where("q.service_provider = :spid")
-                ->setParameter("spid", $service_provider->getAgents()->getAgentId())
-                ->getQuery()
-                ->getResult();
+        // If there is a service provider value stored in the pin entity, load the agents of it
+        if ($serviceProvider) {
+            // Fetch agents of the service provider if there's a selected service provider
+            $agentRepo = $this->entityManager->getRepository(Agent::class);
+            $agents = $agentRepo->findByServiceProvider($serviceProvider->getId());
         }
-        var_dump($service_provider);die();
-        // Add the Neighborhoods field with the properly data
-        $form->add('agent', EntityType::class, array(
+        
+        // Add the agents field with the properly data
+
+        /*$form->add('agentId', 'entity', array(
+                    'required' => true,
+                    'label' => 'paypin_admin.agent',
+                    'placeholder' => 'Select a Agent ...',
+                    'class' => 'AppBundle\Entity\Agent',
+                    'choice_label' => 'agentId',
+                ));*/
+
+        $form->add('agentId', EntityType::class, array(
             'required' => true,
-            'placeholder' => 'Select a Service Provider first ...',
+            'placeholder' => 'Select a Agent first ...',
             'class' => 'AppBundle:Agent',
             'choices' => $agents
         ));
