@@ -191,5 +191,38 @@ class ServiceProvider
     {
         return (string)$this->id;
     }
+
+    /**
+     * Add agent
+     *
+     * @param \DLRG\HelferBundle\Entity\Zeiten $zeiten
+     * @return ServiceProvider
+     */
+    public function addAgent(Agent $agent)
+    {
+        $this->agents[] = $agent;
+
+        return $this;
+    }
+
+    /**
+     * Remove agent
+     *
+     * @param $agents
+     */
+    public function removeZeiten($agent)
+    {
+        $this->agents->removeElement($agent);
+    }
+
+    /**
+     * Get agent
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAgents()
+    {
+        return $this->agents;
+    }
 }
 

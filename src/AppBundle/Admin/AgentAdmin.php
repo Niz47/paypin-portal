@@ -113,7 +113,7 @@ class AgentAdmin extends BaseAdmin
             ->add('id')
             ->add('agentId')
             ->add('apiKey')
-            ->add('serviceProvider.serviceProviderName')
+            // ->add('serviceProvider.serviceProviderName')
             ->add('user.userName')
             ->add(
                 'createdDateTime',
