@@ -16,7 +16,7 @@
     <script>
         $('#pin_serviceProviderId').change(function () {
         
-            var citySelector = $(this);
+            var spSelector = $(this);
             
             // Request the agents of the selected service provider.
             $.ajax({
@@ -24,20 +24,20 @@
                 type: "GET",
                 dataType: "JSON",
                 data: {
-                    serviceProviderId: citySelector.val()
+                    serviceProviderId: spSelector.val()
                 },
-                success: function (neighborhoods) {
-                    var neighborhoodSelect = $("#pin_agentId");
+                success: function (agents) {
+                    var agentSelector = $("#pin_agentId");
 
                     // Remove current options
-                    neighborhoodSelect.html('');
+                    agentSelector.html('');
                     
                     // Empty value ...
-                    neighborhoodSelect.append('<option value> Select a neighborhood of ' + citySelector.find("option:selected").text() + ' ...</option>');
+                    agentSelector.append('<option value> Select agent of ' + spSelector.find("option:selected").text() + ' ...</option>');
                     
                     
-                    $.each(neighborhoods, function (key, neighborhood) {
-                        neighborhoodSelect.append('<option value="' + neighborhood.id + '">' + neighborhood.name + '</option>');
+                    $.each(agents, function (key, agent) {
+                        agentSelector.append('<option value="' + agent.id + '">' + agent.name + '</option>');
                     });
                 },
                 error: function (err) {
