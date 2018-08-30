@@ -41,7 +41,7 @@ class PinController extends AbstractController
         foreach($agents as $agent){
             $responseArray[] = array(
                 "id" => $agent->getId(),
-                "name" => $agent->getAgentId()
+                "name" => $agent->getUser()->getUserName()
             );
         }
         
