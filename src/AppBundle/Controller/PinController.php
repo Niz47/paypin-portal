@@ -39,25 +39,6 @@ class PinController extends AbstractController
                 }
             }
 
-
-
-        /*if ($form->isSubmitted() && $form->isValid()) {
-            //Get Data
-            $todo->setName($form['name']->getData());
-            $todo->setCategory($form['category']->getData());
-            $todo->setDescription($form['description']->getData());
-            $todo->setPriority($form['priority']->getData());
-            $todo->setDueDate($form['dueDate']->getData());
-            $todo->setCreateDate(new\DateTime('now'));
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($todo);
-            $em->flush();
-
-            $this->addflash('notice', 'Todo Added!');
-            return $this->redirectToRoute('todo_list');
-        }*/
-
          return $this->render('pin/index.html.twig', array('form'=>$form->createView()));
         // return $this->render('pin/index.html.twig');
     }
@@ -102,7 +83,7 @@ class PinController extends AbstractController
 
     public function getAdminForm()
     {
-        $form = $this->createFormBuilder()
+        /*$form = $this->createFormBuilder()
                     ->add('aaa', TextType::class, array('attr' => array('class' => 'form-control', 'style' => 'margin-bottom:15px')))
                      ->add('serviceProvider', 'entity', array(
                             'label' => 'paypin_admin.agent.service_provider',
@@ -110,23 +91,6 @@ class PinController extends AbstractController
                             'choice_label' => 'serviceProviderName',
                         ))
                     ->add('ville')
-                    /*->addEventListener(
-                        FormEvents::PRE_SET_DATA,
-                        function (FormEvent $event) use ($formModifier) {
-                            $data = $event->getData();
-                            $formModifier($event->getForm(), $data->getAgents());
-                        }
-                    )
-                    ->get('serviceProvider')->addEventListener(
-                        FormEvents::POST_SUBMIT,
-                        function (FormEvent $event) use ($formModifier) {
-                            $serviceProvider = $event->getForm()->getData();
-                            $formModifier($event->getForm()->getParent(), $serviceProvider);
-                        }
-                    )*/
-                    /*->add('agent', ChoiceType::class, array(
-                            'disabled'    => true,
-                        ))*/
                     ->add('save', SubmitType::class, array('label'=>'Check', 'attr' => array('class' => 'btn btn-primary', 'style' => 'margin-bottom:15px')))
                     ->getForm();
 
@@ -163,21 +127,7 @@ class PinController extends AbstractController
                             $formModifier($event->getForm()->getParent(), $serviceProvider);
                         }
                     );
-
-
-        /*$form = $this->createFormBuilder()
-                    ->add('aaa', TextType::class, array('attr' => array('class' => 'form-control', 'style' => 'margin-bottom:15px')))
-                    ->add('serviceProvider', 'entity', array(
-                            'label' => 'paypin_admin.agent.service_provider',
-                            'class' => 'AppBundle\Entity\ServiceProvider',
-                            'choice_label' => 'serviceProviderName',
-                        ))
-                    ->add('agent', ChoiceType::class, array(
-                            'disabled'    => true,
-                        ))
-                    ->add('save', SubmitType::class, array('label'=>'Check', 'attr' => array('class' => 'btn btn-primary', 'style' => 'margin-bottom:15px')))
-                    ->getForm();*/
-        return $form;
+        return $form;*/
     }
 
     public function isAdmin($roles)
