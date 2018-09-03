@@ -51,7 +51,6 @@ class PinType extends AbstractType
         $user = $repository->find(1);
         var_dump($user->getServiceProviderName());die();*/
 
-
         // 3. Add 2 event listeners for the form
         $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
         $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
@@ -80,10 +79,11 @@ class PinType extends AbstractType
         // 4. Add the province element
         $form->add('serviceProviderId', 'entity', array(
                     'required' => true,
-                    'label' => 'paypin_admin.agent.service_provider',
-                    'placeholder' => 'Select a Service Provider...',
+                    // 'label' => 'paypin_admin.agent.service_provider',
+                    'placeholder' => 'Select Service Provider Name ...',
                     'class' => 'AppBundle\Entity\ServiceProvider',
                     'choice_label' => 'serviceProviderName',
+                    'attr' => ['class' => 'wrap-input100 validate-input input-margin'],
                 ));
         
         $agents = array();
@@ -107,9 +107,10 @@ class PinType extends AbstractType
 
         $form->add('agentId', EntityType::class, array(
             'required' => true,
-            'placeholder' => 'Select a Agent first ...',
+            'placeholder' => 'Select Agent Name ...',
             'class' => 'AppBundle:Agent',
-            'choices' => $agents
+            'choices' => $agents,
+            'attr' => ['class' => 'wrap-input100 validate-input input-margin'],
         ));
     }
 
