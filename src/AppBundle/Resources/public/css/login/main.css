@@ -729,3 +729,23 @@ select {
   font-weight: bold;
   font-size: 18px;
 }
+
+.response-err {
+  color: #fff;
+  background: #dc3545 !important;
+  padding-bottom: 3px;
+  margin-bottom: 15px;
+}
+
+.show-response {
+  color: #fff;
+}
+
+.show-response .left {
+  padding-left: 8%;
+}
+
+.user-input-margin {
+  margin-top: 5%;
+  margin-bottom: 8%;
+}

@@ -1,0 +1,47 @@
+{% extends "FOSUserBundle::custom_login_layout.html.twig" %}
+
+{% block body %}
+<div class="container">
+    <div class="row search-frame">
+        <div class="col-lg-8 col-md-10 col-xs-10">
+            <div class="circle-tile">
+                <div class="circle-tile-heading">
+                    <img src="{{ asset('bundles/app/images/logo.png') }}" alt="Red dot network">
+                </div>
+
+                <div class="circle-tile-content">
+
+                    {% if voucherResponse is not null %}
+                        <table class="table show-response">
+                          <tbody>
+                            <tr>
+                              <th class="left">Voucher Reference ID : {{ voucherResponse.voucherReferenceID }}</th>
+                            </tr>
+                            <tr>
+                              <th class="left">Serial Number : {{ voucherResponse.serialNo }}</th>
+                            </tr>
+                            <tr>
+                              <th class="left">Amount : {{ voucherResponse.amount }}</th>
+                            </tr>
+                            <tr>
+                              <th class="left">Voucher Status : {{ voucherResponse.voucherStatus }}</th>
+                            </tr>
+                          </tbody>
+                        </table>
+                    {% else %}
+                        <p class="text-danger"> No Response </p>
+                    {% endif %}
+
+                    <a href="{{ absolute_url(path('homepage')) }}" class="circle-tile-footer btn-search">
+                        <i class="fa fa-angle-double-left faa-tada animated"></i> Back 
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+{% endblock %}

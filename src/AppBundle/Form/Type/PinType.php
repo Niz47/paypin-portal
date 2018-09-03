@@ -10,10 +10,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Doctrine\ORM\EntityManagerInterface;
-
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-
-// Your Entity
 use AppBundle\Entity\ServiceProvider;
 use AppBundle\Entity\Agent;
 use AppBundle\Entity\Pin;
@@ -96,15 +93,6 @@ class PinType extends AbstractType
         }
         
         // Add the agents field with the properly data
-
-        /*$form->add('agentId', 'entity', array(
-                    'required' => true,
-                    'label' => 'paypin_admin.agent',
-                    'placeholder' => 'Select a Agent ...',
-                    'class' => 'AppBundle\Entity\Agent',
-                    'choice_label' => 'agentId',
-                ));*/
-
         $form->add('agentId', EntityType::class, array(
             'required' => true,
             'placeholder' => 'Select Agent Name ...',
@@ -116,7 +104,6 @@ class PinType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        // $resolver->setRequired('entityManager');
         $resolver->setDefaults(array(
             'data_class' => Pin::class,
         ));

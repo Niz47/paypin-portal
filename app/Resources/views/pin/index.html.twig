@@ -1,8 +1,73 @@
-{% extends 'base.html.twig' %}
+{% extends "FOSUserBundle::custom_login_layout.html.twig" %}
 
 {% block body %}
-  <h2 class="page-header">Check Pin Code</h2>
-  {{form_start(form)}}
-  {{form_widget(form)}}
-  {{form_end(form)}}
+<div class="container">
+    <div class="row search-frame">
+        <div class="col-lg-8 col-md-10 col-xs-10">
+            <div class="circle-tile">
+                <div class="circle-tile-heading">
+                    <img src="{{ asset('bundles/app/images/logo.png') }}" alt="Red dot network">
+                </div>
+
+                <div class="circle-tile-content">
+
+                    {{ form_start(form) }}
+                        <div class="user-logout pull-right">
+                            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                                {{ app.user.username }} |
+                                <a href="{{ path('fos_user_security_logout') }}" class="text-danger f-red-bold">
+                                    {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                                </a>
+                            {% endif %}
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <span class="login100-form-title p-b-34 p-t-27">
+                            Pay Pin
+                        </span>
+
+                        {% for message in app.flashes('error') %}
+                            <div class="response-err">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+
+                        <div class="wrap-input100 input-margin user-input-margin">
+                            {{ form_widget(form.pinCode, {'attr': {'class': 'input100', 'style' : "padding: 0 5px 0 14px;", 'placeholder' : 'Pin Code', 'required':'true' }}) }}
+                            <div class="hide-err" id="has-err">
+                                <div class="text-danger">
+                                    Enter Number Only
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="circle-tile-footer">
+                            <i class="fa fa-search faa-tada animated"></i>
+                            <button  type="submit" class="btn-search">Search</button>
+                        </div>
+                        {# <input type="submit" value="Check" /> #}
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#form_pinCode').on('change', function() {
+                if (/^\d+$/.test($(this).val())) {
+                    // Contain numbers only
+                    jQuery('#has-err').addClass('hide-err').removeClass('show-err');
+                } else {
+                    // Contain other characters also
+                    jQuery('#has-err').addClass('show-err').removeClass('hide-err');
+                }
+            })
+        });
+    </script>
 {% endblock %}

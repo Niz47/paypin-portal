@@ -27,6 +27,12 @@
                             Pay Pin
                         </span>
 
+                        {% for message in app.flashes('error') %}
+                            <div class="response-err">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+
                         <div class="wrap-input100 input-margin">
                             {{ form_widget(form.pinCode, {'attr': {'class': 'input100', 'style' : "padding: 0 5px 0 14px;", 'placeholder' : 'Pin Code', 'required':'true' }}) }}
                             <div class="hide-err" id="has-err">
@@ -43,7 +49,6 @@
                             <i class="fa fa-search faa-tada animated"></i>
                             <button  type="submit" class="btn-search">Search</button>
                         </div>
-                        {# <input type="submit" value="Check" /> #}
                     {{ form_end(form) }}
                 </div>
             </div>
@@ -86,7 +91,6 @@
                     
                     // Empty value ...
                     agentSelector.append('<option value> Select agent of ' + spSelector.find("option:selected").text() + ' ...</option>');
-                    
                     
                     $.each(agents, function (key, agent) {
                         agentSelector.append('<option value="' + agent.id + '">' + agent.name + '</option>');

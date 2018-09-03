@@ -1,6 +1,5 @@
 <?php
 namespace AppBundle\Controller;
-// use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,6 +15,7 @@ use AppBundle\Repository\ServiceProviderRepository;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use AppBundle\Form\Type\PinType;
+use AppBundle\Entity\VoucherResponse;
 
 class PinController extends AbstractController
 {
@@ -70,10 +70,14 @@ class PinController extends AbstractController
                 $serviceProviderID = $form['serviceProviderId']->getData()->getServiceProviderId();
 
                 $apiResponse = $this->checkPinAdminAction($agentID, $secretKey, $serviceProviderID, $pinCode);
-                var_dump($apiResponse);die();
-                // $this->addFlash('success', 'Pin updated!');
+                $response = $this->checkResponse($apiResponse);
+                if ($response["status"] == "error") {
+                    $this->addFlash("error", $response["message"]);
+                    return $this->redirectToRoute('homepage');
+                } else {
+                    return $this->render('pin/show.html.twig', ['voucherResponse' => $response["voucherResponse"]]);
+                }
             }
-
             return $this->render('pin/index-admin.html.twig', ['form' => $form->createView()]);
 
         } else {
@@ -82,21 +86,52 @@ class PinController extends AbstractController
             $form -> handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) 
             {
-                $apiResponse = $this->checkPinUserAction($form['pin_code']->getData());
-                var_dump($apiResponse);die();
+                $apiResponse = $this->checkPinUserAction($form['pinCode']->getData());
+                $response = $this->checkResponse($apiResponse);
+                if ($response["status"] == "error") {
+                    $this->addFlash("error", $response["message"]);
+                    return $this->redirectToRoute('homepage');
+                } else {
+                    return $this->render('pin/show.html.twig', ['voucherResponse' => $response["voucherResponse"]]);
+                }
             }
             
-            return $this->render('pin/index.html.twig', array('form'=>$form->createView()));
+            return $this->render('pin/index.html.twig', ['form' => $form->createView()]);
         }
+    }
+
+    public function checkResponse($apiResponse)
+    {
+        $response = [];
+        if (isset($apiResponse["MAVException"])) {
+            $response["status"] = "error";
+            $response["message"] = $apiResponse["MAVException"]["errorText"];
+        } else {
+            $voucher = $apiResponse["Response"]["Vouchers"][0];
+            if ($voucher["reasonCode"] == "1007") {
+                $response["status"] = "error";
+                $response["message"] = $voucher["reasonText"];
+            } else {
+                $voucherResponse = new VoucherResponse();
+                $voucherResponse->voucherReferenceID = $voucher["voucherReferenceID"];
+                $voucherResponse->serialNo = $voucher["barcode"];
+                $voucherResponse->amount = $voucher["amount"] .' '.  $voucher["currency"];
+                $voucherResponse->voucherStatus = $voucher["status"];
+                $voucherResponse->submitDate = (isset($voucher["submitDate"])) ? $voucher["submitDate"] : "";
+                $voucherResponse->redemeeDate = (isset($voucher["redemeeDate"])) ? $voucher["submitDate"] : "";
+                $voucherResponse->lastUpdateDate = (isset($voucher["lastUpdateDate"])) ? $voucher["submitDate"] : "";
+                $response["status"] = "success";
+                $response["voucherResponse"] = $voucherResponse;
+            }
+        }
+        return $response;
     }
 
     public function checkPinAdminAction($agentID, $secretKey, $serviceProviderID, $pinCode)
     {
         //  connect Pin Manager service
         $pinManager = $this->get('paypin.pin_manager');
-        $apiResponse = $pinManager->checkPinStatus($agentID, $secretKey, $serviceProviderID, $pinCode);
-        var_dump($apiResponse);die();
-        return $this->render('pin/index.html.twig');
+        return $pinManager->checkPinStatus($agentID, $secretKey, $serviceProviderID, $pinCode);
     }
 
     public function checkPinUserAction($pinCode)
@@ -113,16 +148,13 @@ class PinController extends AbstractController
         // $pinCode = '145675282726186';
         //  connect Pin Manager service
         $pinManager = $this->get('paypin.pin_manager');
-        $apiResponse = $pinManager->checkPinStatus($agentID, $secretKey, $serviceProviderID, $pinCode);
-        var_dump($apiResponse);die();
-        return $this->render('pin/index.html.twig');
+        return $pinManager->checkPinStatus($agentID, $secretKey, $serviceProviderID, $pinCode);
     }
 
     public function getUserForm()
     {
         $form = $this->createFormBuilder()
-                    ->add('pin_code', TextType::class, array('attr' => array('class' => 'form-control', 'style' => 'margin-bottom:15px')))
-                    ->add('save', SubmitType::class, array('label'=>'Check', 'attr' => array('class' => 'btn btn-primary', 'style' => 'margin-bottom:15px')))
+                    ->add('pinCode', TextType::class, array('attr' => array('class' => 'form-control', 'style' => 'margin-bottom:15px')))
                     ->getForm();
         return $form;
     }
