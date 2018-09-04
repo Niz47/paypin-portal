@@ -35,6 +35,7 @@ framework:
 
 # Twig Configuration
 twig:
+    exception_controller: AppBundle:Exception:showException
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
 
@@ -113,7 +114,7 @@ sonata_admin:
     dashboard:
         blocks:
             # display a dashboard block
-            - { position: left, type: sonata.admin.block.admin_list }
+            - { position: top, class: col-md-12, type: sonata.admin.block.admin_list }
 
 services: 
     paypin.pin_manager:
