@@ -117,6 +117,8 @@ class PinController extends AbstractController
                 $voucherResponse->serialNo = $voucher["barcode"];
                 $voucherResponse->amount = $voucher["amount"] .' '.  $voucher["currency"];
                 $voucherResponse->voucherStatus = $voucher["status"];
+                $voucherResponse->nextStatus = $voucher["nextStatus"];
+                $voucherResponse->expireDate = date_format(date_create($voucher["expiry"]), "d M Y");
                 $voucherResponse->submitDate = (isset($voucher["submitDate"])) ? $voucher["submitDate"] : "";
                 $voucherResponse->redemeeDate = (isset($voucher["redemeeDate"])) ? $voucher["submitDate"] : "";
                 $voucherResponse->lastUpdateDate = (isset($voucher["lastUpdateDate"])) ? $voucher["submitDate"] : "";

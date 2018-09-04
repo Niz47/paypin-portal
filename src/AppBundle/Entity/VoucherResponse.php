@@ -44,17 +44,23 @@ class VoucherResponse
     public $redemeeDate;
 
     /**
+     * @var Datetime
+     *
+     */
+    public $expireDate;
+
+    /**
      * @var string
      *
      */
-    public $lastUpdateDate;
+    public $nextStatus;
 
     /**
      * Set voucherReferenceID
      *
      * @param string $voucherReferenceID
      *
-     * @return Pin
+     * @return VoucherResponse
      */
     public function setVoucherReferenceID($voucherReferenceID)
     {
@@ -78,7 +84,7 @@ class VoucherResponse
      *
      * @param string $serialNo
      *
-     * @return Pin
+     * @return VoucherResponse
      */
     public function setSerialNo($serialNo)
     {
@@ -102,7 +108,7 @@ class VoucherResponse
      *
      * @param string $amount
      *
-     * @return Pin
+     * @return VoucherResponse
      */
     public function setAmount($amount)
     {
@@ -126,7 +132,7 @@ class VoucherResponse
      *
      * @param string $voucherStatus
      *
-     * @return Pin
+     * @return VoucherResponse
      */
     public function setVoucherStatus($voucherStatus)
     {
@@ -150,7 +156,7 @@ class VoucherResponse
      *
      * @param string $submitDate
      *
-     * @return Pin
+     * @return VoucherResponse
      */
     public function setSubmitDate($submitDate)
     {
@@ -174,7 +180,7 @@ class VoucherResponse
      *
      * @param string $redemeeDate
      *
-     * @return Pin
+     * @return VoucherResponse
      */
     public function setRedemeeDate($redemeeDate)
     {
@@ -194,26 +200,50 @@ class VoucherResponse
     }
 
     /**
-     * Set lastUpdateDate
+     * Set expireDate
      *
-     * @param string $lastUpdateDate
+     * @param Datetime $expireDate
      *
-     * @return Pin
+     * @return VoucherResponse
      */
-    public function setLastUpdateDate($lastUpdateDate)
+    public function setExpireDate($expireDate)
     {
-        $this->lastUpdateDate = $lastUpdateDate;
+        $this->expireDate = $expireDate;
 
         return $this;
     }
 
     /**
-     * Get lastUpdateDate
+     * Get expireDate
+     *
+     * @return Datetime
+     */
+    public function getExpireDate()
+    {
+        return $this->expireDate;
+    }
+
+    /**
+     * Set nextStatus
+     *
+     * @param string $nextStatus
+     *
+     * @return VoucherResponse
+     */
+    public function setNextStatus($nextStatus)
+    {
+        $this->nextStatus = $nextStatus;
+
+        return $this;
+    }
+
+    /**
+     * Get nextStatus
      *
      * @return string
      */
-    public function getLastUpdateDate()
+    public function getNextStatus()
     {
-        return $this->lastUpdateDate;
+        return $this->nextStatus;
     }
 }

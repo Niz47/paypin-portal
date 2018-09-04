@@ -15,8 +15,16 @@
                         <div class="user-logout pull-right">
                             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                                 {{ app.user.username }} |
-                                <a href="{{ path('fos_user_security_logout') }}" class="text-danger f-red-bold">
+                                <a href="{{ path('fos_user_security_logout') }}" class="f-red-bold">
                                     {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                                </a>
+                            {% endif %}
+                        </div>
+
+                        <div class="pull-right gotodashboard">
+                            {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_SONATA_USER_READER") or is_granted("ROLE_SONATA_SERVICE_PROVIDER_READER") or is_granted("ROLE_SONATA_AGENT_READER")%}
+                                <a href="{{ path('sonata_admin_dashboard') }}" class="f-red-bold shadow">
+                                    Go To Dashboard
                                 </a>
                             {% endif %}
                         </div>

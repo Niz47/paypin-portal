@@ -373,7 +373,7 @@ iframe {
   color: #e2231e;
   background: #fff;
   line-height: 1.2;
-
+  cursor: pointer;
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;
@@ -513,7 +513,7 @@ iframe {
   text-decoration: none;
 }
 
-.is-login a:hover {
+.f-red-bold:hover {
   color: #fff;
   text-decoration: none;
 }
@@ -748,4 +748,28 @@ select {
 .user-input-margin {
   margin-top: 5%;
   margin-bottom: 8%;
+}
+
+.gotodashboard {
+  width: 100%;
+  text-align: right;
+  padding-right: 5%;
+}
+
+.shadow {
+  color: #333;
+  font-family: Arvo;
+  font-weight: bold;
+  text-shadow: 1px 1px 0 #c9cacb, 1px 1px 0 #fff, 1px 1px 0 #fff;
+  line-height: 0.8em;
+  letter-spacing: 0.1em;
+  transform: scaleY(0.7);
+  -webkit-transform: scaleY(0.7);
+  -moz-transform: scaleY(0.7);
+}
+
+.shadow:hover {
+  color: red;
+  animation:dash-animation 30s infinite linear;
+  text-decoration: none;
 }
