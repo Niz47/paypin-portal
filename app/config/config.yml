@@ -35,7 +35,6 @@ framework:
 
 # Twig Configuration
 twig:
-    exception_controller: AppBundle:Exception:showException
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
 
