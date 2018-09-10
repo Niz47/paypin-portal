@@ -33,7 +33,7 @@ security:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }   
-        - { path: ^/check-pin, role: ROLE_PIN_READ }   
+        - { path: ^/, role: ROLE_PIN_READ }   
         - { path: ^/admin/, role: [ROLE_ADMIN, ROLE_SUPER_ADMIN, ROLE_READER, ROLE_SONATA_USER_ADMIN, ROLE_SONATA_USER_READER, ROLE_SONATA_SERVICE_PROVIDER_READER, ROLE_SONATA_SERVICE_PROVIDER_ADMIN, ROLE_SONATA_AGENT_READER, ROLE_SONATA_AGENT_ADMIN] } 
 
     role_hierarchy:        
