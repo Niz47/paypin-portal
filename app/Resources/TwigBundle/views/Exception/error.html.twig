@@ -1,0 +1,21 @@
+{% extends '@Twig/layout.html.twig' %}
+
+{% block body %}
+<br>
+<br>
+<div style="text-align: center;">
+    <h1 style="color:red;">Error {{ exception.statusCode }}</h1>
+    <br>
+    <br>
+    <br>
+    <p style="font-size: 20px;">
+        The resource you are looking for is unavailable or not found.
+        <br>
+        <br>
+        <p style="">
+        	The server returned a "{{ status_code }} {{ status_text }}".
+            You can return to <a href="{{ path('homepage') }}">Home</a>
+        </p>
+    </p>
+</div>
+{% endblock %}
