@@ -1,19 +1,26 @@
-# This file is a "template" of what your parameters.yml file should look like
-# Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
-# https://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
+# This file is auto-generated during the composer install
 parameters:
     database_host: 127.0.0.1
-    database_port: ~
-    database_name: symfony
+    database_port: null
+    database_name: paypinportal
     database_user: root
-    database_password: ~
-    # You should uncomment this if you want to use pdo_sqlite
-    #database_path: '%kernel.project_dir%/var/data/data.sqlite'
-
+    database_password: null
     mailer_transport: smtp
     mailer_host: 127.0.0.1
-    mailer_user: ~
-    mailer_password: ~
-
-    # A secret key that's used to generate certain security-related tokens
-    secret: ThisTokenIsNotSoSecretChangeIt
+    mailer_user: admin@gmail.com
+    mailer_password: null
+    secret: df62732461bddc9485c8a7827e8294b741f2cd10
+    portal_allowed_user_create_roles:
+        ROLE_USER: 'Default User Role'
+        ROLE_READER: Reader
+        ROLE_ADMIN: Admin
+        ROLE_SUPER_ADMIN: 'Super Admin'
+        ROLE_SONATA_USER_READER: 'User Management Read'
+        ROLE_SONATA_USER_ADMIN: 'User Management Write'
+        ROLE_SONATA_SERVICE_PROVIDER_READER: 'Service Provider Read'
+        ROLE_SONATA_SERVICE_PROVIDER_ADMIN: 'Service Provider Write'
+        ROLE_SONATA_AGENT_READER: 'Agent Read'
+        ROLE_SONATA_AGENT_ADMIN: 'Agent Write'
+        ROLE_PIN_READ: 'Check Pin Code'
+    pay_pin_api_url: 
+    check_pin_admin_access: ROLE_SUPER_ADMIN
