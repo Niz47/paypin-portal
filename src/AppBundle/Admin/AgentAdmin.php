@@ -81,10 +81,10 @@ class AgentAdmin extends BaseAdmin
             ->addIdentifier('id')
             ->add('agentId')
             ->add('apiKey')
-            ->add('serviceProvider.serviceProviderName')
-            ->add('user.userName')
+            ->add('serviceProvider.serviceProviderName', null, ['label' => 'paypin_admin.serviceprovider.sp_name'])
+            ->add('user.username', null, ['label' => 'paypin_admin.user.username'])
             ->add(
-                'created_date_time',
+                'createdDateTime',
                 'datetime',
                 ['template' => 'AppBundle:Admin:date_mmt_format_list.html.twig']
             )
@@ -113,8 +113,8 @@ class AgentAdmin extends BaseAdmin
             ->add('id')
             ->add('agentId')
             ->add('apiKey')
-            // ->add('serviceProvider.serviceProviderName')
-            ->add('user.userName')
+            // ->add('serviceProvider.serviceProviderName', null, ['label' => 'paypin_admin.serviceprovider.sp_name'])
+            ->add('user.userName', null, ['label' => 'paypin_admin.user.username'])
             ->add(
                 'createdDateTime',
                 'datetime',

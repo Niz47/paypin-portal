@@ -62,7 +62,7 @@ class ServiceProviderAdmin extends BaseAdmin
             ->add('serviceProviderId')
             ->add('serviceProviderName')
             ->add(
-                'created_date_time',
+                'createdDateTime',
                 'datetime',
                 ['template' => 'AppBundle:Admin:date_mmt_format_list.html.twig']
             )
