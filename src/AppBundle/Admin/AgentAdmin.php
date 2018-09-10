@@ -113,7 +113,7 @@ class AgentAdmin extends BaseAdmin
             ->add('id')
             ->add('agentId')
             ->add('apiKey')
-            // ->add('serviceProvider.serviceProviderName', null, ['label' => 'paypin_admin.serviceprovider.sp_name'])
+            ->add('serviceProvider.serviceProviderName', null, ['label' => 'paypin_admin.serviceprovider.sp_name'])
             ->add('user.userName', null, ['label' => 'paypin_admin.user.username'])
             ->add(
                 'createdDateTime',
