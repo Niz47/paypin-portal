@@ -10,6 +10,8 @@ parameters:
     mailer_user: admin@gmail.com
     mailer_password: null
     secret: df62732461bddc9485c8a7827e8294b741f2cd10
+    allowed_ips_during_maintenance:
+        - 127.0.0.1
     portal_allowed_user_create_roles:
         ROLE_USER: 'Default User Role'
         ROLE_READER: Reader

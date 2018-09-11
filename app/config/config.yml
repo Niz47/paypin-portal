@@ -119,3 +119,16 @@ services:
     paypin.pin_manager:
         class: AppBundle\Services\PinManager
         arguments: ['@service_container']
+
+lexik_maintenance:
+    authorized:
+        ips: '%allowed_ips_during_maintenance%'
+    driver:
+        ttl: 3600
+        class: '\Lexik\Bundle\MaintenanceBundle\Drivers\FileDriver'
+        options: {file_path: "%kernel.project_dir%/var/cache/lock"}
+
+    #Optional. response code and status of the maintenance page
+    response:
+        code: 503
+        status: "Service Temporarily Unavailable"
