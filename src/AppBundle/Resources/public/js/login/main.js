@@ -15,7 +15,6 @@
   
     /*[ Validate ]*/
     var input = $('.validate-input .input100');
-
     $('.validate-form').on('submit',function(){
         var check = true;
 
@@ -50,13 +49,11 @@
 
     function showValidate(input) {
         var thisAlert = $(input).parent();
-
         $(thisAlert).addClass('alert-validate');
     }
 
     function hideValidate(input) {
         var thisAlert = $(input).parent();
-
         $(thisAlert).removeClass('alert-validate');
     }
     
@@ -73,8 +70,50 @@
             $(this).removeClass('active');
             showPass = 0;
         }
-        
     });
 
+    function pinValidate(input) {
+        return (/^\d+$/.test($(input).val()));
+    }
+
+    $('#form_pinCode').on('change', function() {
+        var check = true;
+            if(pinValidate($(this)) == false){
+                showValidate($(this));
+                check=false;
+            } else {
+                hideValidate($(this));
+            }
+        return check;
+    });
+    
+    $('.checkpin').on('submit',function(){
+        var check = true;
+            if(pinValidate($('#form_pinCode')) == false){
+                showValidate($('#form_pinCode'));
+                check=false;
+            }
+        return check;
+    });
+
+    $('#pin_pinCode').on('change', function() {
+        var check = true;
+            if(pinValidate($(this)) == false){
+                showValidate($(this));
+                check=false;
+            } else {
+                hideValidate($(this));
+            }
+        return check;
+    });
+    
+    $('.admincheckpin').on('submit',function(){
+        var check = true;
+            if(pinValidate($('#pin_pinCode')) == false){
+                showValidate($('#pin_pinCode'));
+                check=false;
+            }
+        return check;
+    });
 
 })(jQuery);

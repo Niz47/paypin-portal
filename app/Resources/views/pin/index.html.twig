@@ -11,7 +11,7 @@
 
                 <div class="circle-tile-content">
 
-                    {{ form_start(form) }}
+                    {{ form_start(form, {'attr': {'class': 'checkpin'}}) }}
                         <div class="user-logout pull-right">
                             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                                 {{ app.user.username }} |
@@ -33,41 +33,18 @@
                             </div>
                         {% endfor %}
 
-                        <div class="wrap-input100 input-margin user-input-margin">
-                            {{ form_widget(form.pinCode, {'attr': {'class': 'input100', 'style' : "padding: 0 5px 0 14px;", 'placeholder' : 'Pin Code', 'required':'true' }}) }}
-                            <div class="hide-err" id="has-err">
-                                <div class="text-danger">
-                                    Enter Number Only
-                                </div>
-                            </div>
+                        <div class="wrap-input100 input-margin user-input-margin validate-input" data-validate = "Enter Number Only">
+                            {{ form_widget(form.pinCode, {'attr': {'class': 'input100 validate-input', 'style' : "padding: 0 5px 0 14px;", 'placeholder' : 'Pin Code', 'required':'true' }}) }}
                         </div>
                         
                         <div class="circle-tile-footer">
                             <i class="fa fa-search faa-tada animated"></i>
                             <button  type="submit" class="btn-search">Search</button>
                         </div>
-                        {# <input type="submit" value="Check" /> #}
                     {{ form_end(form) }}
                 </div>
             </div>
         </div>
     </div>
 </div>
-{% endblock %}
-
-{% block javascripts %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#form_pinCode').on('change', function() {
-                if (/^\d+$/.test($(this).val())) {
-                    // Contain numbers only
-                    jQuery('#has-err').addClass('hide-err').removeClass('show-err');
-                } else {
-                    // Contain other characters also
-                    jQuery('#has-err').addClass('show-err').removeClass('hide-err');
-                }
-            })
-        });
-    </script>
 {% endblock %}

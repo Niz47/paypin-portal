@@ -11,7 +11,7 @@
 
                 <div class="circle-tile-content">
 
-                    {{ form_start(form) }}
+                    {{ form_start(form, {'attr': {'class': 'admincheckpin'}}) }}
                         <div class="user-logout pull-right">
                             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                                 {{ app.user.username }} |
@@ -41,13 +41,8 @@
                             </div>
                         {% endfor %}
 
-                        <div class="wrap-input100 input-margin">
+                        <div class="wrap-input100 input-margin validate-input" data-validate = "Enter Number Only">
                             {{ form_widget(form.pinCode, {'attr': {'class': 'input100', 'style' : "padding: 0 5px 0 14px;", 'placeholder' : 'Pin Code', 'required':'true' }}) }}
-                            <div class="hide-err" id="has-err">
-                                <div class="text-danger">
-                                    Enter Number Only
-                                </div>
-                            </div>
                         </div>
                         
                         {{ form_widget(form.serviceProviderId) }}
@@ -66,23 +61,11 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="{{ asset('bundles/app/vendor/jquery/jquery-3.2.1.min.js') }}"></script>
+    <script src="{{ asset('bundles/app/js/login/main.js') }}"></script>
     <script>
-        $(document).ready(function() {
-            $('#pin_pinCode').on('change', function() {
-                if (/^\d+$/.test($(this).val())) {
-                    // Contain numbers only
-                    jQuery('#has-err').addClass('hide-err').removeClass('show-err');
-                } else {
-                    // Contain other characters also
-                    jQuery('#has-err').addClass('show-err').removeClass('hide-err');
-                }
-            })
-        });
         $('#pin_serviceProviderId').change(function () {
-        
             var spSelector = $(this);
-            
             // Request the agents of the selected service provider.
             $.ajax({
                 url: "{{ path('get_agents') }}",
@@ -105,7 +88,7 @@
                     });
                 },
                 error: function (err) {
-                    alert("An error ocurred while loading data ...");
+                    alert("An error ocurred while loading agents ...");
                 }
             });
         });
