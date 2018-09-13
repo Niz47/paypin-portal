@@ -108,7 +108,7 @@ class PinController extends AbstractController
             $response["message"] = $apiResponse["MAVException"]["errorText"];
         } else {
             $voucher = $apiResponse["Response"]["Vouchers"][0];
-            if ($voucher["reasonCode"] == "1007") {
+            if (($voucher["reasonCode"] == "1007") || ($voucher["reasonCode"] == "1019")) {
                 $response["status"] = "error";
                 $response["message"] = $voucher["reasonText"];
             } else {
